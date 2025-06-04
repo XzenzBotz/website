@@ -1,0 +1,233 @@
+/* Style utama ZennxStore - modern & responsif */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.header-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 10px;
+  background: linear-gradient(270deg, #f39c12, #f1c40f, #f39c12);
+  background-size: 600% 600%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.slogan {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #555;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.produk-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.produk {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.produk:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.produk img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.produk-info {
+  padding: 15px 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.produk-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.produk-info p {
+  flex-grow: 1;
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.harga {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #e67e22;
+  margin-bottom: 15px;
+}
+
+.produk-info button {
+  background: #e67e22;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(230, 126, 34, 0.4);
+}
+
+.produk-info button:hover {
+  background: #d35400;
+  box-shadow: 0 6px 15px rgba(211, 84, 0, 0.6);
+}
+
+/* Floating Cart Button */
+.floating-cart {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #e67e22;
+  color: white;
+  font-size: 2.3rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(230,126,34,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 999;
+}
+
+.floating-cart:hover {
+  transform: scale(1.15);
+  box-shadow: 0 12px 20px rgba(230,126,34,0.8);
+}
+
+/* Cart Pop-up */
+#cartPopup {
+  position: fixed;
+  bottom: 95px;
+  right: 25px;
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  padding: 20px;
+  display: none;
+  z-index: 9999;
+}
+
+#cartPopup h4 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #e67e22;
+  text-align: center;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.cart-item button {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: #e74c3c;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.cart-item button:hover {
+  color: #c0392b;
+}
+
+.btn {
+  display: inline-block;
+  background: #e67e22;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover {
+  background: #d35400;
+}
+
+.btn-danger {
+  background: #c0392b;
+}
+
+.btn-danger:hover {
+  background: #96281b;
+}
+
+/* Responsive */
+@media(max-width: 600px) {
+  .produk-container {
+    grid-template-columns: 1fr;
+  }
+  #cartPopup {
+    width: 90vw;
+    right: 5vw;
+    bottom: 90px;
+  }
+}

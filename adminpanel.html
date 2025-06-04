@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Panel - ZennxStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: #2c3e50;
+      color: white;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+    }
+    .admin-container {
+      background: #34495e;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #e67e22;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: 600;
+    }
+    input[type="text"], input[type="password"], input[type="number"] {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+    button {
+      background: #e67e22;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1rem;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #d35400;
+    }
+    .hidden {
+      display: none;
+    }
+    .produk-list {
+      margin-top: 30px;
+      max-height: 350px;
+      overflow-y: auto;
+      border: 1px solid #e67e22;
+      border-radius: 12px;
+      padding: 15px;
+      background: #2c3e50;
+    }
+    .produk-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #444;
+      padding-bottom: 8px;
+    }
+    .produk-item:last-child {
+      border-bottom: none;
+    }
+    .produk-item span {
+      flex: 1;
+    }
+    .produk-actions button {
+      margin-left: 10px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.3s ease;
+    }
+    .btn-edit {
+      background: #2980b9;
+      color: white;
+    }
+    .btn-edit:hover {
+      background: #1c5980;
+    }
+    .btn-delete {
+      background: #c0392b;
+      color: white;
+    }
+    .btn-delete:hover {
+      background: #96281b;
+    }
+    .status-toggle {
+      background: #27ae60;
+      color: white;
+    }
+    .status-toggle.soldout {
+      background: #7f8c8d;
+      cursor: default;
+    }
+    .add-produk-form {
+      margin-top: 30px;
+    }
+    .message {
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    .message.error {
+      color: #e74c3c;
+    }
+    .message.success {
+      color: #2ecc71;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <h1>Admin Panel - ZennxStore</h1>
+
+    <div id="loginSection">
+      <label for="username">Username Admin:</label>
+      <input type="text" id="username" placeholder="Masukkan username" />
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Masukkan password" />
+      <button onclick="loginAdmin()">Login</button>
+      <div id="loginMessage" class="message"></div>
+    </div>
+
+    <div id="adminSection" class="hidden">
+      <h2>Kelola Produk</h2>
+
+      <div class="produk-list" id="produkList">
+        <!-- Daftar produk tampil di sini -->
+      </div>
+
+      <form id="addProdukForm" class="add-produk-form">
+        <h3>Tambah Produk Baru</h3>
+        <label for="produkNama">Nama Produk:</label>
+        <input type="text" id="produkNama" required />
+        <label for="produkHarga">Harga (Rp):</label>
+        <input type="number" id="produkHarga" min="0" required />
+        <label for="produkDeskripsi">Deskripsi:</label>
+        <input type="text" id="produkDeskripsi" required />
+        <label for="produkFoto">Nama File Foto (misal produk9.jpg):</label>
+        <input type="text" id="produkFoto" placeholder="produk9.jpg" required />
+        <button type="submit">Tambah Produk</button>
+      </form>
+      <button onclick="logoutAdmin()" style="margin-top:20px; background:#c0392b;">Logout</button>
+    </div>
+  </div>
+
+  <script>
+    // Data produk awal disinkron dengan index.html
+    let produkData = [
+      {
+        nama: "Jam Tangan Casio",
+        harga: 150000,
+        deskripsi: "Jam tangan klasik dan tahan air, cocok untuk kegiatan outdoor dan formal.",
+        foto: "produk1.jpg",
+        soldOut: false
+      },
+      {
+        nama: "Kemeja Flanel",
+        harga: 85000,
+        deskripsi: "Kemeja flanel second import, masih sangat mulus, bahan tebal dan hangat.",
+        foto: "produk2.jpg",
+        soldOut: false
+      },
+      {
+        nama: "Sneakers Nike",
+        harga: 320000,
+        deskripsi: "Sneakers keren dan nyaman dipakai, cocok untuk gaya kasual anak muda.",
+        foto: "produk3.jpg",
+        soldOut: false
+      },
+      {
+        nama: "Tas Ransel Jansport",
+        harga: 180000,
+        deskripsi: "Tas ransel kuat dan muat banyak, cocok untuk sekolah dan jalan-jalan.",
+        foto: "produk4.jpg",
+        soldOut: false
+      },
+      {
+        nama: "Headset Bluetooth",
+        harga: 95000,
+        deskripsi: "Headset wireless dengan suara jernih, baterai tahan lama untuk musik nonstop.",
+        foto: "produk5.jpg",
+        soldOut: false
+      },
+      {
+        nama: "Dompet Kulit Pria",
+        harga: 60000,
+        deskripsi: "Dompet berbahan kulit asli, desain elegan dan banyak slot kartu.",
+        foto: "produk6.jpg",
+        soldOut: false
+      },
+      {
+        nama: "Kaos Polos Oversize",
+        harga: 55000,
+        deskripsi: "Kaos nyaman dengan model oversize, cocok untuk gaya kekinian.",
+        foto: "produk7.jpg",
+        soldOut: false
+      },
+      {
+        nama: "Kacamata Anti Radiasi",
+        harga: 70000,
+        deskripsi: "Lindungi mata dari layar HP/laptop dengan kacamata stylish dan ringan.",
+        foto: "produk8.jpg",
+        soldOut: false
+      }
+    ];
+
+    // Admin login credentials
+    const adminUsername = "adminzennx";
+    const adminPassword = "zennx123";
+
+    // Elemen
+    const loginSection = document.getElementById("loginSection");
+    const adminSection = document.getElementById("adminSection");
+    const loginMessage = document.getElementById("loginMessage");
+    const produkList = document.getElementById("produkList");
+    const addProdukForm = document.getElementById("addProdukForm");
+
+    // Login function
+    function loginAdmin() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (username === adminUsername && password === adminPassword) {
+        loginSection.classList.add("hidden");
+        adminSection.classList.remove("hidden");
+        loginMessage.textContent = "";
+        renderProdukList();
+      } else {
+        loginMessage.textContent = "Username atau password salah!";
+        loginMessage.className = "message error";
+      }
+    }
+
+    // Logout
+    function logoutAdmin() {
+      loginSection.classList.remove("hidden");
+      adminSection.classList.add("hidden");
+      clearForm();
+    }
+
+    // Render produk list di admin
+    function renderProdukList() {
+      produkList.innerHTML = "";
+      produkData.forEach((produk, index) => {
+        const div = document.createElement("div");
+        div.className = "produk-item";
+        div.innerHTML = `
+          <span><strong>${produk.nama}</strong> - Rp${produk.harga.toLocaleString()}<br />
+          <em>${produk.deskripsi}</em><br />
+          <small>Status: <span style="color:${produk.soldOut ? '#7f8c8d' : '#27ae60'}">${produk.soldOut ? 'Sold Out' : 'Available'}</span></small></span>
+          <div class="produk-actions">
+            <button class="btn-edit" onclick="toggleSoldOut(${index})" ${produk.soldOut ? "disabled class='status-toggle soldout'" : ""}>${produk.soldOut ? "Sold Out" : "Mark Sold Out"}</button>
+            <button class="btn-delete" onclick="deleteProduk(${index})">Hapus</button>
+          </div>
+        `;
+        produkList.appendChild(div);
+      });
+    }
+
+    // Toggle status sold out
+    function toggleSoldOut(idx) {
+      produkData[idx].soldOut = !produkData[idx].soldOut;
+      renderProdukList();
+    }
+
+    // Hapus produk
+    function deleteProduk(idx) {
+      if (confirm(`Hapus produk "${produkData[idx].nama}"?`)) {
+        produkData.splice(idx, 1);
+        renderProdukList();
+      }
+    }
+
+    // Tambah produk baru
+    addProdukForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const nama = document.getElementById("produkNama").value.trim();
+      const harga = Number(document.getElementById("produkHarga").value);
+      const deskripsi = document.getElementById("produkDeskripsi").value.trim();
+      const foto = document.getElementById("produkFoto").value.trim();
+
+      if (!nama || !harga || !deskripsi || !foto) {
+        alert("Semua field harus diisi!");
+        return;
+      }
+
+      produkData.push({
+        nama,
+        harga,
+        deskripsi,
+        foto,
+        soldOut: false
+      });
+
+      renderProdukList();
+      clearForm();
+      alert("Produk berhasil ditambahkan!");
+    });
+
+    // Bersihkan form tambah produk
+    function clearForm() {
+      document.getElementById("produkNama").value = "";
+      document.getElementById("produkHarga").value = "";
+      document.getElementById("produkDeskripsi").value = "";
+      document.getElementById("produkFoto").value = "";
+    }
+  </script>
+</body>
+</html>

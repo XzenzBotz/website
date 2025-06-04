@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZennxStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1 class="title shimmer">ZennxStore</h1>
+    <p class="subtitle">Sell Barang New & Second</p>
+    <p class="slogan">berkualitas, awet, dan harga murmer dana pelajar</p>
+  </header>
+
+  <main class="product-container" id="product-container">
+    <!-- Produk ditampilkan secara dinamis via script.js -->
+  </main>
+
+  <!-- Tombol Keranjang -->
+  <button id="cart-button" class="floating-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+
+  <!-- Popup Keranjang -->
+  <div id="cart-popup" class="cart-popup hidden">
+    <h2>Keranjang Belanja</h2>
+    <ul id="cart-items"></ul>
+    <p>Total: <span id="cart-total">Rp 0</span></p>
+    <a href="checkout.html" class="btn-checkout">Checkout</a>
+  </div>
+
+  <!-- Kontak dan Navigasi -->
+  <div class="contact-links">
+    <a href="https://wa.me/6285150731087" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://tiktok.com/@_xzennz" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="mailto: akmalsebastian89@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+  </div>
+
+  <button class="floating-nav-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>
